@@ -348,6 +348,29 @@
                 ],
                 correctAnswer: 2, // Index 2 is C
                 errorMsg: "Genotype error! To pass on a recessive trait while remaining unaffected, what letters must they carry? (Review Big Idea #3)"
+            },
+            {
+                title: "Clue 14: The Karyotype Code",
+                story: "You discover a locked folder containing microscopic snapshots of the lions' DNA, but the decryption key requires you to identify what these snapshots actually show.",
+                question: "What does a karyotype show scientists that simple behavioral observation cannot?",
+                type: "mcq",
+                options: [
+                    "A. The exact age and hunting skills of the lion.",
+                    "B. The physical appearance and coat pattern of the lion's offspring.",
+                    "C. The number and structure of an individual's chromosomes.",
+                    "D. A map of the geographic region the lion lives in."
+                ],
+                correctAnswer: 2, // Index 2 is C
+                errorMsg: "Focus mismatch! Think about the microscopic level of DNA organization. (Review Big Idea #3)"
+            },
+            {
+                title: "Clue 15: The Coat Color Simulation",
+                story: "You find a genetic simulation terminal. It asks you to predict the outcome of a specific mating pair to override the final lockdown protocol.",
+                question: "In lions, a brown coat (B) is dominant over a yellow coat (b). If a heterozygous male (Bb) mates with a heterozygous female (Bb), what percentage of their cubs are expected to have a yellow coat?",
+                type: "text",
+                placeholder: "Enter a number (e.g., 25, 50, 75, 100)",
+                correctAnswer: ["25", "25%"], 
+                errorMsg: "Calculation error! Draw a 2x2 Punnett square for Bb x Bb. How many boxes show the recessive yellow coat (bb)? (Review Big Idea #2)"
             }
         ];
 
@@ -370,6 +393,17 @@
         const errorText = document.getElementById('error-text');
 
         function startGame() {
+            // Shuffle the clues array using the Fisher-Yates algorithm
+            for (let i = clues.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [clues[i], clues[j]] = [clues[j], clues[i]];
+            }
+
+            // Clean up the titles so we can number them dynamically in their new order
+            clues.forEach(clue => {
+                clue.title = clue.title.replace(/^Clue \d+: /, '');
+            });
+
             startScreen.classList.add('hidden');
             gameScreen.classList.remove('hidden');
             loadClue();
@@ -387,7 +421,7 @@
             progressText.innerText = `Clue ${currentClueIndex + 1} of ${clues.length}`;
             updateProgressDots();
             
-            clueTitle.innerHTML = `<i class="fa-solid fa-lock text-amber-600 mr-3"></i> ${currentClue.title}`;
+            clueTitle.innerHTML = `<i class="fa-solid fa-lock text-amber-600 mr-3"></i> Clue ${currentClueIndex + 1}: ${currentClue.title}`;
             clueStory.innerText = currentClue.story;
             clueQuestion.innerText = currentClue.question;
 
