@@ -142,13 +142,13 @@
                 <div class="bg-stone-800 p-6 rounded-xl border border-amber-600/30 max-w-md mx-auto relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-600 to-yellow-400"></div>
                     <p class="text-stone-300 mb-6 font-medium text-lg">
-                        Discuss and reflect on your reasoning with your pride for <span class="text-amber-400 font-bold">45 seconds</span> before the next clue is revealed.
+                        Discuss and reflect on your reasoning with your pride for <span class="text-amber-400 font-bold">30 seconds</span> before the next clue is revealed.
                     </p>
                     
                     <!-- Timer Display -->
                     <div class="flex justify-center items-baseline space-x-2">
                         <i class="fa-regular fa-clock text-4xl text-amber-500"></i>
-                        <span id="timer-display" class="text-6xl font-extrabold text-amber-400 tabular-nums tracking-tight">45</span>
+                        <span id="timer-display" class="text-6xl font-extrabold text-amber-400 tabular-nums tracking-tight">30</span>
                         <span class="text-xl text-amber-500/70 font-semibold">sec</span>
                     </div>
                 </div>
@@ -264,7 +264,7 @@
         let currentClueIndex = 0;
         let selectedMCQ = null;
         let timerInterval = null;
-        const REFLECTION_TIME = 45; // 45 seconds
+        const REFLECTION_TIME = 30; // 30 seconds
 
         // Screens
         const startScreen = document.getElementById('start-screen');
