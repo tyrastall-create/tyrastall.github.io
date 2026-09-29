@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuLu the Lioness: Genetics Escape Room</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #2c1a0b;
+            background-image: linear-gradient(rgba(44, 26, 11, 0.8), rgba(44, 26, 11, 0.9)), url('https://images.unsplash.com/photo-1547471080-7fc2caa7f5a6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #f3f4f6;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pulse-warning {
+            animation: pulseWarning 1s infinite alternate;
+        }
+
+        @keyframes pulseWarning {
+            from { color: #f59e0b; transform: scale(1); }
+            to { color: #ef4444; transform: scale(1.05); }
+        }
+
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #27272a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d97706; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #b45309; 
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 sm:p-6">
+
+    <main class="w-full max-w-3xl bg-stone-900/95 backdrop-blur-md rounded-2xl shadow-2xl border border-amber-700/50 overflow-hidden relative">
+        
+        <!-- Header Banner -->
+        <div class="h-4 w-full bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600"></div>
+
+        <div class="p-6 sm:p-10">
+            
+            <!-- START SCREEN -->
+            <section id="start-screen" class="text-center space-y-6 fade-in block">
+                <div class="inline-block p-4 rounded-full bg-amber-500/20 text-amber-500 mb-2">
+                    <i class="fa-solid fa-paw text-5xl"></i>
+                </div>
+                <h1 class="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-200">
+                    LuLu the Lioness
+                </h1>
+                <h2 class="text-2xl font-semibold text-stone-300">Genetics Escape Room</h2>
+                <p class="text-stone-400 max-w-lg mx-auto leading-relaxed text-lg mt-4">
+                    You are a wildlife geneticist tracking a pride in the savanna. 
+                    Your field data is locked behind a series of genetic puzzles. 
+                    Solve the clues to unlock the secrets of the pride!
+                </p>
+                <div class="pt-6">
+                    <button onclick="startGame()" class="px-8 py-4 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl shadow-lg shadow-amber-900/50 transition-all duration-200 transform hover:scale-105 active:scale-95 text-lg w-full sm:w-auto">
+                        <i class="fa-solid fa-lock-open mr-2"></i> Start the Mission
+                    </button>
+                </div>
+            </section>
+
+            <!-- GAME SCREEN -->
+            <section id="game-screen" class="hidden fade-in">
+                <!-- Progress Indicator -->
+                <div class="flex items-center justify-between mb-8 text-sm font-semibold text-amber-500/80">
+                    <span id="progress-text">Clue 1 of 5</span>
+                    <div class="flex space-x-1" id="progress-dots">
+                        <!-- Dots injected via JS -->
+                    </div>
+                </div>
+
+                <!-- Clue Header -->
+                <div class="mb-6 border-b border-stone-700 pb-4">
+                    <h3 id="clue-title" class="text-2xl sm:text-3xl font-bold text-amber-400 flex items-center">
+                        <i class="fa-solid fa-file-shield mr-3 text-amber-600"></i>
+                        <span>Clue Title</span>
+                    </h3>
+                </div>
+
+                <!-- Clue Story/Context -->
+                <p id="clue-story" class="text-stone-300 italic mb-6 leading-relaxed bg-stone-800/50 p-4 rounded-lg border border-stone-700">
+                    Story text goes here.
+                </p>
+
+                <!-- Question -->
+                <h4 id="clue-question" class="text-xl font-semibold text-white mb-6">
+                    Question text goes here?
+                </h4>
+
+                <!-- Dynamic Input Area (Multiple Choice or Text Input) -->
+                <div id="input-area" class="space-y-3 mb-8">
+                    <!-- Injected via JS -->
+                </div>
+
+                <!-- Error Message Container -->
+                <div id="error-message" class="hidden mb-6 p-4 rounded-lg bg-red-900/50 border border-red-500 text-red-200 flex items-center">
+                    <i class="fa-solid fa-triangle-exclamation mr-3 text-xl text-red-400"></i>
+                    <span id="error-text">Incorrect answer.</span>
+                </div>
+
+                <!-- Submit Button -->
+                <button onclick="checkAnswer()" class="w-full px-6 py-4 bg-stone-700 hover:bg-stone-600 text-white font-bold rounded-xl transition-all duration-200 flex justify-center items-center group">
+                    <span>Submit Answer</span>
+                    <i class="fa-solid fa-chevron-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </button>
+            </section>
+
+            <!-- REFLECTION SCREEN -->
+            <section id="reflection-screen" class="hidden text-center space-y-8 fade-in py-8">
+                <div class="text-emerald-400 mb-4">
+                    <i class="fa-solid fa-unlock-keyhole text-6xl drop-shadow-[0_0_15px_rgba(52,211,153,0.5)]"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-white">Code Accepted!</h2>
+                
+                <div class="bg-stone-800 p-6 rounded-xl border border-amber-600/30 max-w-md mx-auto relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-600 to-yellow-400"></div>
+                    <p class="text-stone-300 mb-6 font-medium text-lg">
+                        Discuss and reflect on your reasoning with your pride for <span class="text-amber-400 font-bold">45 seconds</span> before the next clue is revealed.
+                    </p>
+                    
+                    <!-- Timer Display -->
+                    <div class="flex justify-center items-baseline space-x-2">
+                        <i class="fa-regular fa-clock text-4xl text-amber-500"></i>
+                        <span id="timer-display" class="text-6xl font-extrabold text-amber-400 tabular-nums tracking-tight">45</span>
+                        <span class="text-xl text-amber-500/70 font-semibold">sec</span>
+                    </div>
+                </div>
+
+                <!-- Next Clue Button (Hidden until timer completes) -->
+                <div class="h-16 flex items-center justify-center">
+                    <button id="next-clue-btn" onclick="advanceToNextClue()" class="hidden px-8 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg transition-all duration-200 transform hover:scale-105">
+                        Continue to Next Clue <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                    <p id="timer-wait-text" class="text-stone-500 italic">Waiting for reflection time to end...</p>
+                </div>
+            </section>
+
+            <!-- END SCREEN -->
+            <section id="end-screen" class="hidden text-center space-y-6 fade-in">
+                <div class="inline-block p-6 rounded-full bg-emerald-500/20 text-emerald-500 mb-4">
+                    <i class="fa-solid fa-trophy text-6xl"></i>
+                </div>
+                <h1 class="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200">
+                    Mission Accomplished!
+                </h1>
+                <p class="text-stone-300 text-lg max-w-xl mx-auto leading-relaxed">
+                    You have successfully unlocked all the genetic data for LuLu's pride! You now understand the mechanisms of inheritance, Punnett squares, and the importance of scientific evidence.
+                </p>
+                
+                <div class="bg-stone-800 p-6 rounded-xl border border-stone-700 text-left mt-8">
+                    <h3 class="text-xl font-bold text-amber-400 mb-3"><i class="fa-solid fa-pen-to-square mr-2"></i> Final Reflection:</h3>
+                    <p class="text-stone-300 mb-4">
+                        Why does knowing an animal's family structure matter for conservation of endangered wildlife and for zoo breeding programs?
+                    </p>
+                    <p class="text-sm text-stone-500 italic">
+                        (Discuss this with your teacher or submit your final answer via your class portal.)
+                    </p>
+                </div>
+                
+                <button onclick="location.reload()" class="mt-8 px-6 py-3 bg-stone-700 hover:bg-stone-600 text-white font-semibold rounded-xl transition-all">
+                    <i class="fa-solid fa-rotate-right mr-2"></i> Restart Escape Room
+                </button>
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        // Data Structure for the Escape Room Clues based on the review guide
+        const clues = [
+            {
+                title: "Clue 1: The DNA Vault",
+                story: "You are tracking a pride in the savanna, but the genetic data is locked inside a digital vault. You need to verify the basics of inheritance to gain access.",
+                question: "Which of the following correctly describes how a lion cub gets its genetic information?",
+                type: "mcq",
+                options: [
+                    "A. It only inherits DNA from whichever parent is present at birth.",
+                    "B. It inherits a complete, identical copy of one parent's DNA.",
+                    "C. It inherits half its DNA from its mother and half from its father.",
+                    "D. It inherits DNA equally from all adults in the pride."
+                ],
+                correctAnswer: 2, // Index 2 is C
+                errorMsg: "Access Denied. Remember: Offspring get half their genetic information from mom and half from dad. (Review Big Idea #1)"
+            },
+            {
+                title: "Clue 2: The Punnett Puzzle",
+                story: "You found a locked box containing the pride's pedigree records. The keypad requires a specific percentage to open.",
+                question: "Tufted tails are dominant to untufted tails. A heterozygous male (Tt) mates with a non-tufted-tailed female (tt). What percentage of cubs are expected to have a non-tufted tail?",
+                type: "text",
+                placeholder: "Enter a number (e.g., 25, 50, 75, 100)",
+                correctAnswer: ["50", "50%"], // Accept with or without percent sign
+                errorMsg: "Incorrect ratio. Draw your 2x2 Punnett square! Tt x tt. (Review Big Idea #2)"
+            },
+            {
+                title: "Clue 3: The Observation Trap",
+                story: "Camera traps show an adult female lion named Nia nursing and raising three cubs in her den. No genetic testing has been done yet.",
+                question: "Is Nia definitely the birth mother of all three cubs?",
+                type: "mcq",
+                options: [
+                    "YES",
+                    "NO",
+                    "NOT ENOUGH INFO"
+                ],
+                correctAnswer: 1, // Index 1 is NO
+                errorMsg: "Caregiving behavior doesn't always match biological relatedness! (Review Big Idea #4)"
+            },
+            {
+                title: "Clue 4: The Microsatellite Match",
+                story: "The lab sent over the DNA results, but the file is protected by a biological password.",
+                question: "Scientists compare short repeated DNA sequences that vary between individuals to determine relatedness. What is this type of data called?",
+                type: "mcq",
+                options: [
+                    "A. Karyotype",
+                    "B. Phylogeny",
+                    "C. Microsatellite data",
+                    "D. Pedigree"
+                ],
+                correctAnswer: 2, // Index 2 is C
+                errorMsg: "DNA fingerprint mismatch. Check Big Idea #4!"
+            },
+            {
+                title: "Clue 5: The Evidence Equation",
+                story: "To finalize your field report and secure the pride's future, you must explain your scientific methods to the head researcher.",
+                question: "Why do scientists typically rely on multiple types of evidence (e.g., behavior, microsatellites, karyotypes) rather than just one?",
+                type: "mcq",
+                options: [
+                    "A. Multiple types of evidence take less time to collect.",
+                    "B. A single type of evidence can be misleading, so combining evidence gives a more reliable conclusion.",
+                    "C. Only one type of evidence is ever needed for accurate results.",
+                    "D. Behavior alone is always the most reliable evidence."
+                ],
+                correctAnswer: 1, // Index 1 is B
+                errorMsg: "Incomplete science. Good scientific conclusions require corroboration. (Review Big Idea #6)"
+            }
+        ];
+
+        let currentClueIndex = 0;
+        let selectedMCQ = null;
+        let timerInterval = null;
+        const REFLECTION_TIME = 45; // 45 seconds
+
+        // Screens
+        const startScreen = document.getElementById('start-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const reflectionScreen = document.getElementById('reflection-screen');
+        const endScreen = document.getElementById('end-screen');
+
+        // Game UI Elements
+        const progressText = document.getElementById('progress-text');
+        const progressDots = document.getElementById('progress-dots');
+        const clueTitle = document.getElementById('clue-title');
+        const clueStory = document.getElementById('clue-story');
+        const clueQuestion = document.getElementById('clue-question');
+        const inputArea = document.getElementById('input-area');
+        const errorContainer = document.getElementById('error-message');
+        const errorText = document.getElementById('error-text');
+        
+        // Reflection UI Elements
+        const timerDisplay = document.getElementById('timer-display');
+        const nextClueBtn = document.getElementById('next-clue-btn');
+        const timerWaitText = document.getElementById('timer-wait-text');
+
+        function startGame() {
+            startScreen.classList.add('hidden');
+            gameScreen.classList.remove('hidden');
+            loadClue();
+        }
+
+        function loadClue() {
+            // Reset states
+            errorContainer.classList.add('hidden');
+            selectedMCQ = null;
+            inputArea.innerHTML = '';
+            
+            const currentClue = clues[currentClueIndex];
+            
+            // Update UI
+            progressText.innerText = `Clue ${currentClueIndex + 1} of ${clues.length}`;
+            updateProgressDots();
+            
+            clueTitle.innerHTML = `<i class="fa-solid fa-lock text-amber-600 mr-3"></i> ${currentClue.title}`;
+            clueStory.innerText = currentClue.story;
+            clueQuestion.innerText = currentClue.question;
+
+            // Generate Input UI based on type
+            if (currentClue.type === 'mcq') {
+                currentClue.options.forEach((option, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'w-full text-left p-4 rounded-xl border-2 border-stone-700 bg-stone-800/80 hover:bg-stone-700 text-stone-200 transition-colors flex items-start';
+                    btn.innerHTML = `<div class="w-6 h-6 rounded-full border-2 border-stone-500 mr-4 mt-0.5 flex-shrink-0 flex items-center justify-center mcq-radio"></div>
+                                     <span>${option}</span>`;
+                    btn.onclick = () => selectMCQ(btn, index);
+                    inputArea.appendChild(btn);
+                });
+            } else if (currentClue.type === 'text') {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.id = 'text-answer';
+                input.placeholder = currentClue.placeholder;
+                input.className = 'w-full p-4 rounded-xl border-2 border-stone-600 bg-stone-800 text-white placeholder-stone-500 focus:outline-none focus:border-amber-500 text-lg transition-colors';
+                input.onkeypress = (e) => { if (e.key === 'Enter') checkAnswer(); };
+                inputArea.appendChild(input);
+                setTimeout(() => input.focus(), 100);
+            }
+        }
+
+        function selectMCQ(buttonElement, index) {
+            selectedMCQ = index;
+            // Reset all styling
+            const allBtns = inputArea.querySelectorAll('button');
+            const allRadios = inputArea.querySelectorAll('.mcq-radio');
+            
+            allBtns.forEach(btn => {
+                btn.classList.remove('border-amber-500', 'bg-amber-900/20');
+                btn.classList.add('border-stone-700', 'bg-stone-800/80');
+            });
+            allRadios.forEach(radio => {
+                radio.classList.remove('border-amber-500', 'bg-amber-500');
+                radio.classList.add('border-stone-500');
+            });
+
+            // Apply selected styling
+            buttonElement.classList.remove('border-stone-700', 'bg-stone-800/80');
+            buttonElement.classList.add('border-amber-500', 'bg-amber-900/20');
+            const radio = buttonElement.querySelector('.mcq-radio');
+            radio.classList.remove('border-stone-500');
+            radio.classList.add('border-amber-500', 'bg-amber-500');
+            
+            // Hide error if they change answer
+            errorContainer.classList.add('hidden');
+        }
+
+        function checkAnswer() {
+            const currentClue = clues[currentClueIndex];
+            let isCorrect = false;
+
+            if (currentClue.type === 'mcq') {
+                if (selectedMCQ === null) {
+                    showError("Please select an option.");
+                    return;
+                }
+                isCorrect = (selectedMCQ === currentClue.correctAnswer);
+            } else if (currentClue.type === 'text') {
+                const answerNode = document.getElementById('text-answer');
+                const rawAnswer = answerNode ? answerNode.value.trim().toLowerCase() : "";
+                if (rawAnswer === "") {
+                    showError("Please enter an answer.");
+                    return;
+                }
+                // Handle multiple accepted strings for text inputs
+                if (Array.isArray(currentClue.correctAnswer)) {
+                    isCorrect = currentClue.correctAnswer.map(a => a.toLowerCase()).includes(rawAnswer);
+                } else {
+                    isCorrect = (rawAnswer === currentClue.correctAnswer.toLowerCase());
+                }
+            }
+
+            if (isCorrect) {
+                triggerReflectionPhase();
+            } else {
+                showError(currentClue.errorMsg);
+            }
+        }
+
+        function showError(msg) {
+            errorText.innerText = msg;
+            errorContainer.classList.remove('hidden');
+            // Shake effect
+            errorContainer.classList.remove('fade-in');
+            void errorContainer.offsetWidth; // trigger reflow
+            errorContainer.classList.add('fade-in');
+        }
+
+        function triggerReflectionPhase() {
+            gameScreen.classList.add('hidden');
+            reflectionScreen.classList.remove('hidden');
+            
+            // Reset UI for reflection
+            nextClueBtn.classList.add('hidden');
+            timerWaitText.classList.remove('hidden');
+            timerDisplay.classList.remove('pulse-warning', 'text-red-500');
+            timerDisplay.classList.add('text-amber-400');
+            
+            let timeLeft = REFLECTION_TIME;
+            timerDisplay.innerText = timeLeft;
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerDisplay.innerText = timeLeft;
+
+                // Visual warning at 10 seconds
+                if (timeLeft <= 10 && timeLeft > 0) {
+                    timerDisplay.classList.add('pulse-warning');
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.innerText = "0";
+                    timerDisplay.classList.remove('pulse-warning', 'text-amber-400');
+                    timerDisplay.classList.add('text-emerald-400');
+                    
+                    timerWaitText.classList.add('hidden');
+                    nextClueBtn.classList.remove('hidden');
+                }
+            }, 1000);
+        }
+
+        function advanceToNextClue() {
+            reflectionScreen.classList.add('hidden');
+            currentClueIndex++;
+
+            if (currentClueIndex < clues.length) {
+                gameScreen.classList.remove('hidden');
+                loadClue();
+            } else {
+                endScreen.classList.remove('hidden');
+            }
+        }
+
+        function updateProgressDots() {
+            progressDots.innerHTML = '';
+            for (let i = 0; i < clues.length; i++) {
+                const dot = document.createElement('div');
+                if (i < currentClueIndex) {
+                    dot.className = 'w-3 h-3 rounded-full bg-emerald-500'; // completed
+                } else if (i === currentClueIndex) {
+                    dot.className = 'w-3 h-3 rounded-full bg-amber-500 animate-pulse'; // current
+                } else {
+                    dot.className = 'w-3 h-3 rounded-full bg-stone-700'; // upcoming
+                }
+                progressDots.appendChild(dot);
+            }
+        }
+    </script>
+</body>
+</html>
