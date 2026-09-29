@@ -149,9 +149,17 @@
                     <p class="text-stone-300 mb-4">
                         Why does knowing an animal's family structure matter for conservation of endangered wildlife and for zoo breeding programs?
                     </p>
-                    <p class="text-sm text-stone-500 italic">
-                        (Discuss this with your teacher or submit your final answer via your class portal.)
+                    <p class="text-amber-500 font-semibold mb-6">
+                        <i class="fa-solid fa-clipboard-check mr-2"></i> Please write your answer to this question on your score card!
                     </p>
+                    
+                    <div class="border-t border-stone-600 pt-6 text-center">
+                        <p class="text-sm text-stone-400 uppercase tracking-widest mb-2 font-semibold">Your Escape Code Word</p>
+                        <div class="inline-block bg-amber-950/80 border-2 border-amber-500 rounded-xl px-8 py-3 shadow-[0_0_15px_rgba(245,158,11,0.3)]">
+                            <span class="text-3xl font-black tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-yellow-500">PRIDE</span>
+                        </div>
+                        <p class="text-sm text-stone-400 mt-3 italic">Write this code word on your score card to prove you escaped!</p>
+                    </div>
                 </div>
                 
                 <button onclick="location.reload()" class="mt-8 px-6 py-3 bg-stone-700 hover:bg-stone-600 text-white font-semibold rounded-xl transition-all">
@@ -312,6 +320,34 @@
                 ],
                 correctAnswer: 1, // Index 1 is B
                 errorMsg: "Root connection failed. Trace the branches back to the beginning! (Review Big Idea #5)"
+            },
+            {
+                title: "Clue 12: The Hidden Trait",
+                story: "You find a pedigree chart for a neighboring pride. You notice two lions with solid coats (unaffected) have a cub with a rare spotted coat (affected).",
+                question: "If two unaffected parents have an affected cub, what does this tell you about the spotted coat trait?",
+                type: "mcq",
+                options: [
+                    "A. The trait is dominant, and one parent must have a hidden dominant allele.",
+                    "B. The trait is recessive, and both parents must be heterozygous (carriers) for the trait.",
+                    "C. The cub must have a different father because this is genetically impossible.",
+                    "D. The trait is caused by the environment, not genetics."
+                ],
+                correctAnswer: 1, // Index 1 is B
+                errorMsg: "Pedigree mismatch! Think about how a hidden trait can skip a generation. (Review Big Idea #3)"
+            },
+            {
+                title: "Clue 13: The Carrier Genotypes",
+                story: "Looking closer at the same pedigree, you need to log the exact genetic makeup of those two unaffected parents who had the spotted cub to unlock the next area.",
+                question: "Using 'B' for the dominant solid coat and 'b' for the recessive spotted coat, what MUST be the genotype of those two unaffected parents?",
+                type: "mcq",
+                options: [
+                    "A. Both must be BB",
+                    "B. One is BB and the other is bb",
+                    "C. Both must be Bb",
+                    "D. Both must be bb"
+                ],
+                correctAnswer: 2, // Index 2 is C
+                errorMsg: "Genotype error! To pass on a recessive trait while remaining unaffected, what letters must they carry? (Review Big Idea #3)"
             }
         ];
 
